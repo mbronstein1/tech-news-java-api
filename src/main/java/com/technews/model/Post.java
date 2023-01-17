@@ -16,6 +16,7 @@ public class Post implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     private String title;
     private String postUrl;
 
@@ -24,6 +25,7 @@ public class Post implements Serializable {
 
     @Transient
     private int voteCount;
+
     private Integer userId;
 
     @NotNull
