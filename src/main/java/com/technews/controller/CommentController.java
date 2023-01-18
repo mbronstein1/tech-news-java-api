@@ -29,9 +29,11 @@ public class CommentController {
         return repository.save(comment);
     }
 
-    @PutMapping("/api/updateComment")
-    public Comment updateComment(@RequestBody Comment comment) {
-        return repository.save(comment);
+    @PutMapping("/api/updateComment/{id}")
+    public Comment updateComment(@PathVariable int id, @RequestBody Comment comment) {
+        Comment tempComment = repository.getById(id);
+        tempComment.setCommentText(comment.getCommentText());
+        return repository.save(tempComment);
     }
 
     @DeleteMapping("/api/comments/{id}")
