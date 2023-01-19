@@ -10,15 +10,16 @@ import java.util.Objects;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name="user")
-
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
+
     private String username;
 
     @Column(unique=true)
     private String email;
+
     private String password;
 
     @Transient
