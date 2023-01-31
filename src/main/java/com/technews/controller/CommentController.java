@@ -20,7 +20,7 @@ public class CommentController {
 
     @GetMapping("/api/comments/{id}")
     public Comment getComment(@PathVariable int id) {
-        return repository.getById(id);
+        return repository.getReferenceById(id);
     }
 
     @PostMapping("/api/comments")
@@ -31,7 +31,7 @@ public class CommentController {
 
     @PutMapping("/api/updateComment/{id}")
     public Comment updateComment(@PathVariable int id, @RequestBody Comment comment) {
-        Comment tempComment = repository.getById(id);
+        Comment tempComment = repository.getReferenceById(id);
         tempComment.setCommentText(comment.getCommentText());
         return repository.save(tempComment);
     }

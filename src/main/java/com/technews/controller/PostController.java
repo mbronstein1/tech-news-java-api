@@ -35,7 +35,7 @@ public class PostController {
 
     @GetMapping("/api/posts/{id}")
     public Post getPost(@PathVariable Integer id) {
-        Post returnPost = repository.getById(id);
+        Post returnPost = repository.getReferenceById(id);
         returnPost.setVoteCount(voteRepository.countVotesByPostId(returnPost.getId()));
         return returnPost;
     }
@@ -49,7 +49,7 @@ public class PostController {
 
     @PutMapping("/api/posts/{id}")
     public Post updatePost(@PathVariable int id, @RequestBody Post post) {
-        Post tempPost = repository.getById(id);
+        Post tempPost = repository.getReferenceById(id);
         tempPost.setTitle(post.getTitle());
         return repository.save(tempPost);
     }
@@ -58,19 +58,21 @@ public class PostController {
     public String addVote(@RequestBody Vote vote, HttpServletRequest request) {
         String returnValue = "";
 
-//        if the user has session data (meaning if the user is logged in)...
+        // if the user has session data (meaning if the user is logged in)...
         if (request.getSession(false) != null) {
             Post returnPost = null;
 
-//            ...then get session user data and set the userId of the vote param to the session id
+            // ...then get session user data and set the userId of the vote param to the
+            // session id
             User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
             vote.setUserId(sessionUser.getId());
             voteRepository.save(vote);
 
-//            I don't understand this fully
-//            Looks like we are finding the post id that correlates to the vote param post id
-//            Then we are setting the vote count for that post
-            returnPost = repository.getById(vote.getPostId());
+            // I don't understand this fully
+            // Looks like we are finding the post id that correlates to the vote param post
+            // id
+            // Then we are setting the vote count for that post
+            returnPost = repository.getReferenceById(vote.getPostId());
             returnPost.setVoteCount(voteRepository.countVotesByPostId(vote.getPostId()));
 
             returnValue = "";

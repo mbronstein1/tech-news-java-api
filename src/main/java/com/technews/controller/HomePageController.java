@@ -61,7 +61,7 @@ public class HomePageController {
         List<Post> postList = postRepository.findAll();
         for (Post p : postList) {
             p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
-            User user = userRepository.getById(p.getUserId());
+            User user = userRepository.getReferenceById(p.getUserId());
             p.setUserName(user.getUsername());
         }
 
@@ -135,7 +135,7 @@ public class HomePageController {
         List<Post> postList = postRepository.findAllPostsByUserId(userId);
         for (Post p : postList) {
             p.setVoteCount(voteRepository.countVotesByPostId(p.getId()));
-            User user = userRepository.getById(p.getUserId());
+            User user = userRepository.getReferenceById(p.getUserId());
             p.setUserName(user.getUsername());
         }
 
@@ -153,9 +153,9 @@ public class HomePageController {
             model.addAttribute("sessionUser", sessionUser);
             model.addAttribute("loggedIn", sessionUser.isLoggedIn());
         }
-        Post post = postRepository.getById(id);
+        Post post = postRepository.getReferenceById(id);
         post.setVoteCount(voteRepository.countVotesByPostId(post.getId()));
-        User postUser = userRepository.getById(post.getUserId());
+        User postUser = userRepository.getReferenceById(post.getUserId());
         post.setUserName(postUser.getUsername());
         List<Comment> commentList = commentRepository.findAllCommentsByPostId(post.getId());
         model.addAttribute("post", post);
@@ -163,11 +163,12 @@ public class HomePageController {
         model.addAttribute("comment", new Comment());
         return model;
     }
+
     public Model setupEditPostPage(int id, Model model, HttpServletRequest request) {
         if (request.getSession(false) != null) {
             User sessionUser = (User) request.getSession().getAttribute("SESSION_USER");
-            Post returnPost = postRepository.getById(id);
-            User tempUser = userRepository.getById(returnPost.getUserId());
+            Post returnPost = postRepository.getReferenceById(id);
+            User tempUser = userRepository.getReferenceById(returnPost.getUserId());
             returnPost.setUserName(tempUser.getUsername());
             returnPost.setVoteCount(voteRepository.countVotesByPostId(returnPost.getId()));
             List<Comment> commentList = commentRepository.findAllCommentsByPostId(returnPost.getId());

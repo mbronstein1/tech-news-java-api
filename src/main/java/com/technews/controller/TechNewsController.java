@@ -118,7 +118,7 @@ public class TechNewsController {
             model.addAttribute("user", new User());
             return "redirect/dashboard";
         } else {
-            Post tempPost = postRepository.getById(id);
+            Post tempPost = postRepository.getReferenceById(id);
             tempPost.setTitle(post.getTitle());
             postRepository.save(tempPost);
 
@@ -170,7 +170,7 @@ public class TechNewsController {
             vote.setUserId(sessionUser.getId());
             voteRepository.save(vote);
 
-            returnPost = postRepository.getById(vote.getPostId());
+            returnPost = postRepository.getReferenceById(vote.getPostId());
             returnPost.setVoteCount(voteRepository.countVotesByPostId(vote.getPostId()));
         }
     }
